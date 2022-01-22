@@ -122,7 +122,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 child: ClipOval(
                                     child: Container(
                                         padding: EdgeInsets.all(8),
-                                        color: Colors.blue,
+                                        color: chatPrimaryColor,
                                         child: GestureDetector(
                                           child: Icon(
                                             Icons.edit,
@@ -302,38 +302,25 @@ class _ProfilePageState extends State<ProfilePage> {
 
             //__________________________________Education details___________________________________
 
-            CardView(head: "Education", data: educ),
+            Cardview(head: "Education", data: educ,),
             SizedBox(
               height: 20,
             ),
 
             //__________________________Card for interest_________________________
 
-            CardView(head: "Interest :-", data: interest),
+            Cardview(head: "Interest :-", data: interest,),
             SizedBox(
               height: 20,
             ),
 
 //_____________________________Card for hobbies___________________________________
 
-            CardView(head: "Hobbies :-", data: hobbie),
+            Cardview(head: "Hobbies :-", data: hobbie),
             SizedBox(
               height: 20,
             ),
-            // Padding(
-            //   padding: const EdgeInsets.all(8.0),
-            //   child: Container(
-            //     alignment: Alignment.center,
-            //     child: Text(
-            //       "Developed by Prashant & Jayant & Priyanka",
-            //       style: TextStyle(
-            //           fontSize: 22,
-            //           fontWeight: FontWeight.normal,
-            //           color: Colors.white),
-            //       textAlign: TextAlign.center,
-            //     ),
-            //   ),
-            // ),
+
             SizedBox(
               height: 60,
             )
