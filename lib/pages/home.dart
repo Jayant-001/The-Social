@@ -18,7 +18,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int index = 2;
+  int index = 0;
 
   final screens = [
     NewsFeed(),
@@ -51,6 +51,10 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       );
+
+
+
+
   @override
   Widget build(BuildContext context) {
     final items = <Widget>[

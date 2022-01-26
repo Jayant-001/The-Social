@@ -63,7 +63,6 @@ Widget rowview({required String text, required var ic}) {
   ]);
 }
 
-//___________________________Card_View____________________________________________________
 
 Widget Icontileview({required String txt, required var img}) {
   return ListTile(
@@ -132,7 +131,7 @@ Widget Icontileview({required String txt, required var img}) {
 //   );
 // }
 
-//___________________________Function for editing image_________________________
+//___________________________Card_View____________________________________________________
 
 class Cardview extends StatefulWidget {
   Cardview(

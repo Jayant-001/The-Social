@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -21,7 +22,9 @@ Future<void> main() async {
         MyRoutes.login: (context) => LoginPage(),
         MyRoutes.chatPage: (context) => ChatPage(),
       },
-      initialRoute: MyRoutes.home,
+      initialRoute: FirebaseAuth.instance.currentUser == null?MyRoutes.login:MyRoutes.home ,
+      // home:
+      //     FirebaseAuth.instance.currentUser == null ?  HomePage():LoginPage(), 
       title: "The Social",
       debugShowCheckedModeBanner: false,
       // themeMode: ThemeMode.light,

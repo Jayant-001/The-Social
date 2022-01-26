@@ -1,11 +1,11 @@
 import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:the_social/chat/constants.dart';
-
+// import 'package:path/path.dart';
+// import 'package:path_provider/path_provider.dart';
 //_________________________TO ENLARGE THE IMAGE_____________________________
 
 class ImageScreen extends StatefulWidget {
@@ -28,7 +28,9 @@ class _ImageScreenState extends State<ImageScreen> {
         title: Text(
           widget.title,
           style: TextStyle(
-              fontWeight: FontWeight.bold, fontSize: 24, color: Colors.white),maxLines: 2,textAlign: TextAlign.center,
+              fontWeight: FontWeight.bold, fontSize: 24, color: Colors.white),
+          maxLines: 2,
+          textAlign: TextAlign.center,
         ),
         actions: [
           IconButton(onPressed: () => editimg(context), icon: Icon(Icons.edit)),
@@ -58,9 +60,7 @@ class _ImageScreenState extends State<ImageScreen> {
   }
 }
 
-
-
-
+//___________________________Function for editing image_________________________
 
 Future editimg(BuildContext context) {
   return showCupertinoModalPopup(
@@ -117,6 +117,7 @@ Future getimg(ImageSource source, BuildContext context) async {
     if (image == null) return;
 
     final imagetemp = File(image.path);
+    //final imageperm = await saveimageperm(image.path);
     // setState(() {
     //   this.image = imagetemp;
     //   t = 1;
@@ -128,6 +129,16 @@ Future getimg(ImageSource source, BuildContext context) async {
   }
   Navigator.of(context).pop();
 }
+
+//__________________Function to save image in gallery____________________________
+
+// Future<File> saveimageperm(String imgpath) async {
+//   final direc = await getApplicationDocumentsDirectory();
+//   final name = basename(imgpath);
+//   final image = File('${direc.path}/$name');
+//   print("image saved__________________________");
+//   return File(imgpath).copy(image.path);
+// }
 
 //_______________Function to upload image on firebase_________________________
 
