@@ -1,8 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:cupertino_icons/cupertino_icons.dart';
+import 'package:flutter/services.dart';
 import 'package:the_social/auth_pages/common_Widgets.dart';
 import 'package:the_social/chat/constants.dart';
+import 'package:the_social/pages/home.dart';
+import 'package:the_social/routes.dart';
 import 'signup.dart';
 
 class LoginPage extends StatefulWidget {
@@ -94,73 +99,89 @@ class _LoginPageState extends State<LoginPage> {
     return Padding(
       padding: const EdgeInsets.only(left: 20.0, right: 20.0),
       child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-            minimumSize: Size(MediaQuery.of(context).size.width - 60, 30.0),
-            elevation: 5.0,
-            // primary: Color.fromRGBO(57, 60, 80, 1),
-            primary: mainColor,
-            padding: EdgeInsets.only(
-              left: 20.0,
-              right: 20.0,
-              top: 7.0,
-              bottom: 7.0,
+          style: ElevatedButton.styleFrom(
+              minimumSize: Size(MediaQuery.of(context).size.width - 60, 30.0),
+              elevation: 5.0,
+              // primary: Color.fromRGBO(57, 60, 80, 1),
+              primary: mainColor,
+              padding: EdgeInsets.only(
+                left: 20.0,
+                right: 20.0,
+                top: 7.0,
+                bottom: 7.0,
+              ),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(20.0)),
+              )),
+          child: Text(
+            buttonName,
+            style: TextStyle(
+              fontSize: 25.0,
+              letterSpacing: 1.0,
+              fontWeight: FontWeight.w400,
             ),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(20.0)),
-            )),
-        child: Text(
-          buttonName,
-          style: TextStyle(
-            fontSize: 25.0,
-            letterSpacing: 1.0,
-            fontWeight: FontWeight.w400,
           ),
-        ),
-        onPressed: () async {
-          if (this._loginKey.currentState!.validate()) {
-            print('Validated');
-            // SystemChannels.textInput.invokeMethod('TextInput.hide');
+          onPressed: () => signIn(_email.text, _pwd.text)
+          //  async {
+          //   if (this._loginKey.currentState!.validate()) {
+          //     print('Validated');
+          // SystemChannels.textInput.invokeMethod('TextInput.hide');
 
-            // if (mounted) {
-            //   setState(() {
-            //     this._isLoading = true;
-            //   });
-            // }
+          // if (mounted) {
+          //   setState(() {
+          //     this._isLoading = true;
+          //   });
+          // }
 
-            // final EmailSignInResults emailSignInResults =
-            //     await _emailAndPasswordAuth.signInWithEmailAndPassword(
-            //         email: this._email.text, pwd: this._pwd.text);
+          // final EmailSignInResults emailSignInResults =
+          //     await _emailAndPasswordAuth.signInWithEmailAndPassword(
+          //         email: this._email.text, pwd: this._pwd.text);
 
-            // String msg = '';
-            // if (emailSignInResults == EmailSignInResults.SignInCompleted)
-            //   Navigator.pushAndRemoveUntil(
-            //       context,
-            //       MaterialPageRoute(builder: (_) => TakePrimaryUserData()),
-            //       (route) => false);
-            // else if (emailSignInResults ==
-            //     EmailSignInResults.EmailNotVerified) {
-            //   msg =
-            //       'Email not Verified.\nPlease Verify your email and then Log In';
-            // } else if (emailSignInResults ==
-            //     EmailSignInResults.EmailOrPasswordInvalid)
-            //   msg = 'Email And Password Invalid';
-            // else
-            //   msg = 'Sign In Not Completed';
+          // String msg = '';
+          // if (emailSignInResults == EmailSignInResults.SignInCompleted)
+          //   Navigator.pushAndRemoveUntil(
+          //       context,
+          //       MaterialPageRoute(builder: (_) => TakePrimaryUserData()),
+          //       (route) => false);
+          // else if (emailSignInResults ==
+          //     EmailSignInResults.EmailNotVerified) {
+          //   msg =
+          //       'Email not Verified.\nPlease Verify your email and then Log In';
+          // } else if (emailSignInResults ==
+          //     EmailSignInResults.EmailOrPasswordInvalid)
+          //   msg = 'Email And Password Invalid';
+          // else
+          //   msg = 'Sign In Not Completed';
 
-            // if (msg != '')
-            //   ScaffoldMessenger.of(context)
-            //       .showSnackBar(SnackBar(content: Text(msg)));
+          // if (msg != '')
+          //   ScaffoldMessenger.of(context)
+          //       .showSnackBar(SnackBar(content: Text(msg)));
 
-            // if (mounted) {
-            //   setState(() {
-            //     this._isLoading = false;
-            //   });
-            // }
-          } else {
-            print('Not Validated');
-          }
-        },
-      ),
+          // if (mounted) {
+          //   setState(() {
+          //     this._isLoading = false;
+          //   });
+          // }
+          // } else {
+          //   print('Not Validated');
+          // }
+          ),
     );
+  }
+
+  void signIn(String email, String password) async {
+    if (this._loginKey.currentState!.validate()) {
+      await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email, password: password)
+          .then((uid) => {
+                Fluttertoast.showToast(
+                    msg: "Login Successfully",
+                    backgroundColor: chatPrimaryColor),
+                Navigator.pushNamed(context, MyRoutes.home), //
+              })
+          .catchError((e) {
+        Fluttertoast.showToast(msg: e.toString());
+      });
+    }
   }
 }
