@@ -1,4 +1,5 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:the_social/chat/constants.dart';
 import 'package:the_social/main_pages/chat_screen.dart';
@@ -17,7 +18,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int index = 2;
+  int index = 0;
 
   final screens = [
     NewsFeed(),
@@ -26,6 +27,33 @@ class _HomePageState extends State<HomePage> {
     SettingsPage(),
     ProfilePage(),
   ];
+
+//__________________Function to control exit from app____________
+
+  Future<bool?> showwarn(BuildContext context) async => showDialog<bool>(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text("Do you want to exit ?"),
+          content: Text("Are you sure"),
+          actions: [
+            ElevatedButton(
+                style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(chatPrimaryColor)),
+                onPressed: () => Navigator.pop(context, false),
+                child: Text("Cancel")),
+            ElevatedButton(
+                style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(chatPrimaryColor)),
+                onPressed: () => Navigator.pop(context, true),
+                child: Text("Exit"))
+          ],
+        ),
+      );
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -37,32 +65,39 @@ class _HomePageState extends State<HomePage> {
       Icon(Icons.person, size: 30),
     ];
 
-    return ClipRect(
-      child: Scaffold(
-          appBar: homeAppBar(),
-          extendBody: true,
-          backgroundColor: Colors.white,
-          // appBar: AppBar(
-          //   title: Text('Home Page'),
-          //   elevation: 0,
-          //   centerTitle: true,
-          // ),
-          body: screens[index],
-          bottomNavigationBar: Theme(
-            data: Theme.of(context).copyWith(
-              iconTheme: IconThemeData(color: Colors.white),
-            ),
-            child: CurvedNavigationBar(
-              color: mainColor,
-              backgroundColor: Colors.transparent,
-              height: 60.0,
-              animationCurve: Curves.easeInOut,
-              animationDuration: Duration(milliseconds: 300),
-              index: index,
-              items: items,
-              onTap: (index) => setState(() => this.index = index),
-            ),
-          )),
+    return WillPopScope(
+      onWillPop: () async {
+        print("Hit back button");
+        final response = await showwarn(context);
+        return response ?? false;
+      },
+      child: ClipRect(
+        child: Scaffold(
+            appBar: homeAppBar(),
+            extendBody: true,
+            backgroundColor: Colors.white,
+            // appBar: AppBar(
+            //   title: Text('Home Page'),
+            //   elevation: 0,
+            //   centerTitle: true,
+            // ),
+            body: screens[index],
+            bottomNavigationBar: Theme(
+              data: Theme.of(context).copyWith(
+                iconTheme: IconThemeData(color: Colors.white),
+              ),
+              child: CurvedNavigationBar(
+                color: mainColor,
+                backgroundColor: Colors.transparent,
+                height: 60.0,
+                animationCurve: Curves.easeInOut,
+                animationDuration: Duration(milliseconds: 300),
+                index: index,
+                items: items,
+                onTap: (index) => setState(() => this.index = index),
+              ),
+            )),
+      ),
     );
   }
 
